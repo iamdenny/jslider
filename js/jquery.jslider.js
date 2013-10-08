@@ -648,6 +648,8 @@
     };
 
     jSliderPointer.prototype.onmousedown = function(evt){
+        if( this.parent.settings.beforeMouseDown && $.isFunction(this.parent.settings.beforeMouseDown) )
+            this.parent.settings.beforeMouseDown.call( this.parent, this.parent.getValue() );
         this._parent = {
             offset: this.parent.domNode.offset(),
             width: this.parent.domNode.width()
@@ -657,13 +659,15 @@
     };
 
     jSliderPointer.prototype.onmousemove = function( evt, x ){
+        if( this.parent.settings.beforeMouseMove && $.isFunction(this.parent.settings.beforeMouseMove) )
+            this.parent.settings.beforeMouseMove.call( this.parent, this.parent.getValue() );
         var coords = this._getPageCoords( evt );
         this._set( this.calc( coords.x ) );
     };
 
     jSliderPointer.prototype.onmouseup = function( evt ){
-        if( this.parent.settings.callback && $.isFunction(this.parent.settings.callback) )
-            this.parent.settings.callback.call( this.parent, this.parent.getValue() );
+        if( this.parent.settings.beforeMouseUp && $.isFunction(this.parent.settings.beforeMouseUp) )
+            this.parent.settings.beforeMouseUp.call( this.parent, this.parent.getValue() );
 
         this.ptr.removeDependClass("hover");
     };
