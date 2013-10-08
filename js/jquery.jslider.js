@@ -648,8 +648,12 @@
     };
 
     jSliderPointer.prototype.onmousedown = function(evt){
-        if( this.parent.settings.beforeMouseDown && $.isFunction(this.parent.settings.beforeMouseDown) )
-            this.parent.settings.beforeMouseDown.call( this.parent, evt, this.parent.getValue() );
+        var doMore = false;
+        if( this.parent.settings.beforeMouseDown && $.isFunction(this.parent.settings.beforeMouseDown) ){
+            doMore = this.parent.settings.beforeMouseDown.call( this.parent, evt, this.parent.getValue() );
+        }
+        if(doMore === false) return;
+
         this._parent = {
             offset: this.parent.domNode.offset(),
             width: this.parent.domNode.width()
@@ -659,8 +663,12 @@
     };
 
     jSliderPointer.prototype.onmousemove = function( evt, x ){
-        if( this.parent.settings.beforeMouseMove && $.isFunction(this.parent.settings.beforeMouseMove) )
-            this.parent.settings.beforeMouseMove.call( this.parent, evt, this.parent.getValue() );
+        var doMore = false;
+        if( this.parent.settings.beforeMouseMove && $.isFunction(this.parent.settings.beforeMouseMove) ){
+            doMore = this.parent.settings.beforeMouseMove.call( this.parent, evt, this.parent.getValue() );
+        }
+        if(doMore === false) return;
+
         var coords = this._getPageCoords( evt );
         this._set( this.calc( coords.x ) );
     };
